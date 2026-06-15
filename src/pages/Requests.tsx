@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import "../styles/dashboard.css";
+import "../styles/requests.css";
 type RequestStatus = "Pending" | "Approved" | "Rejected";
 
 type FinancialRequest = {
