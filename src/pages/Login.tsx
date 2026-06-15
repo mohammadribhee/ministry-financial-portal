@@ -1,7 +1,6 @@
 import { useState } from "react";
 import z from "zod";
 import { useNavigate } from "react-router-dom";
-//import "../styles/login.css";
 const loginSchema = z.object({
   email: z.email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
@@ -50,8 +49,11 @@ function Login() {
 
         <form className="flex flex-col gap-[15px]" onSubmit={handleSubmit}>
           <div>
-            <label className="block mb-1">Email</label>
+            <label htmlFor="email" className="block mb-1">
+              Email
+            </label>
             <input
+              id="email"
               className="w-full p-3 border border-gray-300 rounded-lg"
               type="email"
               placeholder="Enter your email"
@@ -61,8 +63,11 @@ function Login() {
           </div>
 
           <div>
-            <label className="block mb-1">Password</label>
+            <label htmlFor="password" className="block mb-1">
+              Password
+            </label>
             <input
+              id="password"
               className="w-full p-3 border border-gray-300 rounded-lg"
               type="password"
               placeholder="Enter your password"
