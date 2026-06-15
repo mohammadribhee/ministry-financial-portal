@@ -45,6 +45,11 @@ function Requests() {
   const [requestType, setRequestType] = useState("");
   const [amount, setAmount] = useState("");
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"All" | RequestStatus>(
+    "All",
+  );
+
   const handleAddRequest = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -63,6 +68,17 @@ function Requests() {
     setRequestType("");
     setAmount("");
   };
+
+  const filteredRequests = requests.filter((request) => {
+    const matchesSearch = request.applicantName
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === "All" || request.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
 
   return (
     <div className="dashboard-layout">
@@ -83,6 +99,27 @@ function Requests() {
 
         <div className="form-card">
           <h2>Add New Request</h2>
+
+          <div className="filter-card">
+            <input
+              type="text"
+              placeholder="Search by applicant name"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+
+            <select
+              value={statusFilter}
+              onChange={(e) =>
+                setStatusFilter(e.target.value as "All" | RequestStatus)
+              }
+            >
+              <option value="All">All</option>
+              <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
 
           <form onSubmit={handleAddRequest} className="request-form">
             <input
@@ -129,7 +166,7 @@ function Requests() {
             </thead>
 
             <tbody>
-              {requests.map((request) => (
+              {filteredRequests.map((request) => (
                 <tr key={request.id}>
                   <td>{request.id}</td>
                   <td>{request.applicantName}</td>

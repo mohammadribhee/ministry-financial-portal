@@ -244,3 +244,29 @@ body {
 .request-form button:hover {
   background: #09345a;
 }
+
+
+.filter-card {
+  background: white;
+  padding: 18px 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.filter-card input,
+.filter-card select {
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.filter-card input {
+  flex: 1;
+}
+
+.filter-card select {
+  width: 180px;
+}
