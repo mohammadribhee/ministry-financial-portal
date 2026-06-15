@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../styles/dashboard.css";
 import "../styles/requests.css";
+import Sidebar from "../components/Sidebar";
 type RequestStatus = "Pending" | "Approved" | "Rejected";
 
 type FinancialRequest = {
@@ -83,15 +84,7 @@ function Requests() {
 
   return (
     <div className="dashboard-layout">
-      <aside className="sidebar">
-        <h2>Ministry Portal</h2>
-
-        <nav>
-          <a href="/dashboard">Dashboard</a>
-          <a href="/requests">Requests</a>
-          <a href="/transactions">Transactions</a>
-        </nav>
-      </aside>
+      <Sidebar />
 
       <main className="dashboard-main">
         <header className="dashboard-header">

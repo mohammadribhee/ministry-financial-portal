@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/dashboard.css";
+import Sidebar from "../components/Sidebar";
 function Dashboard() {
   const navigate = useNavigate();
 
@@ -10,15 +11,7 @@ function Dashboard() {
 
   return (
     <div className="dashboard-layout">
-      <aside className="sidebar">
-        <h2>Ministry Portal</h2>
-
-        <nav>
-          <a href="/dashboard">Dashboard</a>
-          <a href="/requests">Requests</a>
-          <a href="/transactions">Transactions</a>
-        </nav>
-      </aside>
+      <Sidebar />
 
       <main className="dashboard-main">
         <header className="dashboard-header">
