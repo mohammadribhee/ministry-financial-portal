@@ -40,48 +40,92 @@ const transactions: Transaction[] = [
 
 function Transactions() {
   return (
-    <div className="dashboard-layout">
+    <div className="min-h-screen flex flex-col md:flex-row bg-gray-100">
       <Sidebar />
 
-      <main className="dashboard-main">
-        <header className="dashboard-header">
-          <h1>Transactions</h1>
+      <main className="flex-1 p-6 md:p-10">
+        <header className="mb-8">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900">
+            Transactions
+          </h1>
         </header>
 
-        <div className="table-card">
-          <h2>Financial Transactions</h2>
+        <div className="rounded-xl bg-white p-6 shadow-lg">
+          <h2 className="mb-6 text-center text-2xl font-bold">
+            Financial Transactions
+          </h2>
 
-          <table className="requests-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Reference</th>
-                <th>Beneficiary</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Date</th>
-              </tr>
-            </thead>
+          <div className="overflow-x-auto">
+            <table className="min-w-[900px] w-full border-collapse">
+              <thead>
+                <tr>
+                  <th className="border-b bg-gray-50 p-4 text-left text-gray-800">
+                    ID
+                  </th>
 
-            <tbody>
-              {transactions.map((transaction) => (
-                <tr key={transaction.id}>
-                  <td>{transaction.id}</td>
-                  <td>{transaction.reference}</td>
-                  <td>{transaction.beneficiary}</td>
-                  <td>${transaction.amount}</td>
-                  <td>
-                    <span
-                      className={`status ${transaction.status.toLowerCase()}`}
-                    >
-                      {transaction.status}
-                    </span>
-                  </td>
-                  <td>{transaction.date}</td>
+                  <th className="border-b bg-gray-50 p-4 text-left text-gray-800">
+                    Reference
+                  </th>
+
+                  <th className="border-b bg-gray-50 p-4 text-left text-gray-800">
+                    Beneficiary
+                  </th>
+
+                  <th className="border-b bg-gray-50 p-4 text-left text-gray-800">
+                    Amount
+                  </th>
+
+                  <th className="border-b bg-gray-50 p-4 text-left text-gray-800">
+                    Status
+                  </th>
+
+                  <th className="border-b bg-gray-50 p-4 text-left text-gray-800">
+                    Date
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {transactions.map((transaction) => (
+                  <tr key={transaction.id}>
+                    <td className="border-b p-4 text-gray-500">
+                      {transaction.id}
+                    </td>
+
+                    <td className="border-b p-4 text-gray-500">
+                      {transaction.reference}
+                    </td>
+
+                    <td className="border-b p-4 text-gray-500">
+                      {transaction.beneficiary}
+                    </td>
+
+                    <td className="border-b p-4 text-gray-500">
+                      ${transaction.amount}
+                    </td>
+
+                    <td className="border-b p-4 text-gray-500">
+                      <span
+                        className={`rounded-full px-3 py-1 text-sm font-bold ${
+                          transaction.status === "Completed"
+                            ? "bg-green-100 text-green-800"
+                            : transaction.status === "Pending"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {transaction.status}
+                      </span>
+                    </td>
+
+                    <td className="border-b p-4 text-gray-500">
+                      {transaction.date}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </main>
     </div>
