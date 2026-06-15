@@ -1,7 +1,7 @@
 import { useState } from "react";
 import z from "zod";
 import { useNavigate } from "react-router-dom";
-import "../styles/login.css";
+//import "../styles/login.css";
 const loginSchema = z.object({
   email: z.email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
@@ -38,16 +38,21 @@ function Login() {
     navigate("/dashboard");
   };
   return (
-    <div className="login-page">
-      <div className="login-card">
-        <h1>Ministry Financial Portal</h1>
+    <div className="min-h-screen flex justify-center items-center bg-gray-100">
+      <div className="w-[500px] bg-white p-8 rounded-xl shadow-lg">
+        <h1 className="text-center mb-2 text-3xl leading-tight text-blue-900 font-bold">
+          Ministry Financial Portal
+        </h1>
 
-        <p>Please sign in to continue</p>
+        <p className="text-center mb-5 text-gray-600">
+          Please sign in to continue
+        </p>
 
-        <form onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-[15px]" onSubmit={handleSubmit}>
           <div>
-            <label>Email</label>
+            <label className="block mb-1">Email</label>
             <input
+              className="w-full p-3 border border-gray-300 rounded-lg"
               type="email"
               placeholder="Enter your email"
               value={email}
@@ -56,17 +61,23 @@ function Login() {
           </div>
 
           <div>
-            <label>Password</label>
+            <label className="block mb-1">Password</label>
             <input
+              className="w-full p-3 border border-gray-300 rounded-lg"
               type="password"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          {error && <p className="error">{error}</p>}
+          {error && <p className="text-red-600 text-center text-sm">{error}</p>}
 
-          <button type="submit">Login</button>
+          <button
+            className="p-3 rounded-lg bg-blue-800 text-white text-base cursor-pointer hover:bg-blue-950"
+            type="submit"
+          >
+            Login
+          </button>
         </form>
       </div>
     </div>
