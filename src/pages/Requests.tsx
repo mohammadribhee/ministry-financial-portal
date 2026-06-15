@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 type RequestStatus = "Pending" | "Approved" | "Rejected";
 
 type FinancialRequest = {
@@ -9,7 +11,7 @@ type FinancialRequest = {
   date: string;
 };
 
-const mockRequests: FinancialRequest[] = [
+const initialRequests: FinancialRequest[] = [
   {
     id: 1,
     applicantName: "Ahmad Saleh",
@@ -37,6 +39,31 @@ const mockRequests: FinancialRequest[] = [
 ];
 
 function Requests() {
+  const [requests, setRequests] = useState<FinancialRequest[]>(initialRequests);
+
+  const [applicantName, setApplicantName] = useState("");
+  const [requestType, setRequestType] = useState("");
+  const [amount, setAmount] = useState("");
+
+  const handleAddRequest = (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const newRequest: FinancialRequest = {
+      id: requests.length + 1,
+      applicantName,
+      type: requestType,
+      amount: Number(amount),
+      status: "Pending",
+      date: new Date().toISOString().split("T")[0],
+    };
+
+    setRequests([...requests, newRequest]);
+
+    setApplicantName("");
+    setRequestType("");
+    setAmount("");
+  };
+
   return (
     <div className="dashboard-layout">
       <aside className="sidebar">
@@ -54,6 +81,38 @@ function Requests() {
           <h1>Requests</h1>
         </header>
 
+        <div className="form-card">
+          <h2>Add New Request</h2>
+
+          <form onSubmit={handleAddRequest} className="request-form">
+            <input
+              type="text"
+              placeholder="Applicant name"
+              value={applicantName}
+              onChange={(e) => setApplicantName(e.target.value)}
+              required
+            />
+
+            <input
+              type="text"
+              placeholder="Request type"
+              value={requestType}
+              onChange={(e) => setRequestType(e.target.value)}
+              required
+            />
+
+            <input
+              type="number"
+              placeholder="Amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              required
+            />
+
+            <button type="submit">Add Request</button>
+          </form>
+        </div>
+
         <div className="table-card">
           <h2>Financial Requests</h2>
 
@@ -70,7 +129,7 @@ function Requests() {
             </thead>
 
             <tbody>
-              {mockRequests.map((request) => (
+              {requests.map((request) => (
                 <tr key={request.id}>
                   <td>{request.id}</td>
                   <td>{request.applicantName}</td>
