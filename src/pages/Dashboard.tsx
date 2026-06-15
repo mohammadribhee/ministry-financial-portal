@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import "../styles/dashboard.css";
 import "../styles/sidebar.css";
 import Sidebar from "../components/Sidebar";
 function Dashboard() {
@@ -11,34 +10,43 @@ function Dashboard() {
   };
 
   return (
-    <div className="dashboard-layout">
+    <div className="min-h-screen flex flex-col md:flex-row bg-gray-100">
       <Sidebar />
 
-      <main className="dashboard-main">
-        <header className="dashboard-header">
-          <h1>Dashboard</h1>
-          <button onClick={handleLogout}>Logout</button>
+      <main className="flex-1 p-6 md:p-10">
+        <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900">
+            Dashboard
+          </h1>
+          <button
+            className="w-fit rounded-lg bg-red-600 px-5 py-3 text-white hover:bg-red-700"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
         </header>
 
-        <section className="cards">
-          <div className="card">
-            <h3>Total Requests</h3>
-            <p>24</p>
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="rounded-xl bg-white p-6 text-center shadow-lg">
+            <h3 className="mb-3 text-xl font-bold text-gray-600">
+              Total Requests
+            </h3>
+            <p className="text-4xl font-bold text-blue-800">24</p>
           </div>
 
-          <div className="card">
-            <h3>Approved</h3>
-            <p>14</p>
+          <div className="rounded-xl bg-white p-6 text-center shadow-lg">
+            <h3 className="mb-3 text-xl font-bold text-gray-600">Approved</h3>
+            <p className="text-4xl font-bold text-blue-800">14</p>
           </div>
 
-          <div className="card">
-            <h3>Pending</h3>
-            <p>7</p>
+          <div className="rounded-xl bg-white p-6 text-center shadow-lg">
+            <h3 className="mb-3 text-xl font-bold text-gray-600">Pending</h3>
+            <p className="text-4xl font-bold text-blue-800">7</p>
           </div>
 
-          <div className="card">
-            <h3>Rejected</h3>
-            <p>3</p>
+          <div className="rounded-xl bg-white p-6 text-center shadow-lg">
+            <h3 className="mb-3 text-xl font-bold text-gray-600">Rejected</h3>
+            <p className="text-4xl font-bold text-blue-800">3</p>
           </div>
         </section>
       </main>
