@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "../styles/sidebar.css";
 import Sidebar from "../components/Sidebar";
 type RequestStatus = "Pending" | "Approved" | "Rejected";
 
