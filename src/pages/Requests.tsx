@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../styles/dashboard.css";
 import "../styles/requests.css";
+import "../styles/sidebar.css";
 import Sidebar from "../components/Sidebar";
 type RequestStatus = "Pending" | "Approved" | "Rejected";
 

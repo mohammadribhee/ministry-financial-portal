@@ -1,12 +1,30 @@
+import { NavLink } from "react-router-dom";
 function Sidebar() {
   return (
     <aside className="sidebar">
       <h2>Ministry Portal</h2>
 
       <nav>
-        <a href="/dashboard">Dashboard</a>
-        <a href="/requests">Requests</a>
-        <a href="/transactions">Transactions</a>
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) => (isActive ? "active-link" : "")}
+        >
+          Dashboard
+        </NavLink>
+
+        <NavLink
+          to="/requests"
+          className={({ isActive }) => (isActive ? "active-link" : "")}
+        >
+          Requests
+        </NavLink>
+
+        <NavLink
+          to="/transactions"
+          className={({ isActive }) => (isActive ? "active-link" : "")}
+        >
+          Transactions
+        </NavLink>
       </nav>
     </aside>
   );

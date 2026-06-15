@@ -1,5 +1,5 @@
 import Sidebar from "../components/Sidebar";
-
+import "../styles/sidebar.css";
 type TransactionStatus = "Completed" | "Pending" | "Failed";
 
 type Transaction = {

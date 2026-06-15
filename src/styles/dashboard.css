@@ -4,35 +4,6 @@
   background: #f4f6f9;
 }
 
-.sidebar {
-  width: 240px;
-  background: #0f4c81;
-  color: white;
-  padding: 24px;
-}
-
-.sidebar h2 {
-  margin-bottom: 30px;
-  font-size: 22px;
-}
-
-.sidebar nav {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.sidebar a {
-  color: white;
-  text-decoration: none;
-  padding: 10px;
-  border-radius: 8px;
-}
-
-.sidebar a:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
 .dashboard-main {
   flex: 1;
   padding: 30px;
