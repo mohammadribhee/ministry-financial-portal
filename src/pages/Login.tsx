@@ -1,6 +1,9 @@
 import { useState } from "react";
 import z from "zod";
 import { useNavigate } from "react-router-dom";
+import { login } from "../services/authService";
+import { useAuth } from "../context/AuthContext";
+
 const loginSchema = z.object({
   email: z.email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
@@ -8,11 +11,13 @@ const loginSchema = z.object({
 
 function Login() {
   const navigate = useNavigate();
+  const { loginUser } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const result = loginSchema.safeParse({
@@ -25,17 +30,19 @@ function Login() {
       return;
     }
 
-    if (email !== "admin@gmail.com" || password !== "123456") {
+    try {
+      const data = await login(email, password);
+
+      loginUser(data.accessToken, data.user);
+
+      setError("");
+
+      navigate("/dashboard");
+    } catch {
       setError("Invalid email or password");
-      return;
     }
-
-    setError("");
-
-    localStorage.setItem("isAuthenticated", "true");
-
-    navigate("/dashboard");
   };
+
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-100">
       <div className="w-[500px] bg-white p-8 rounded-xl shadow-lg">
@@ -52,6 +59,7 @@ function Login() {
             <label htmlFor="email" className="block mb-1">
               Email
             </label>
+
             <input
               id="email"
               className="w-full p-3 border border-gray-300 rounded-lg"
@@ -66,6 +74,7 @@ function Login() {
             <label htmlFor="password" className="block mb-1">
               Password
             </label>
+
             <input
               id="password"
               className="w-full p-3 border border-gray-300 rounded-lg"
@@ -75,6 +84,7 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+
           {error && <p className="text-red-600 text-center text-sm">{error}</p>}
 
           <button
