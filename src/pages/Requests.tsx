@@ -1,46 +1,28 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import Sidebar from "../components/Sidebar";
-type RequestStatus = "Pending" | "Approved" | "Rejected";
-
-type FinancialRequest = {
-  id: number;
-  applicantName: string;
-  type: string;
-  amount: number;
-  status: RequestStatus;
-  date: string;
-};
-
-const initialRequests: FinancialRequest[] = [
-  {
-    id: 1,
-    applicantName: "Ahmad Saleh",
-    type: "Budget Approval",
-    amount: 2500,
-    status: "Pending",
-    date: "2026-06-14",
-  },
-  {
-    id: 2,
-    applicantName: "Sara Ali",
-    type: "Payment Request",
-    amount: 1200,
-    status: "Approved",
-    date: "2026-06-12",
-  },
-  {
-    id: 3,
-    applicantName: "Omar Khaled",
-    type: "Refund Request",
-    amount: 800,
-    status: "Rejected",
-    date: "2026-06-10",
-  },
-];
+import { useAuth } from "../context/AuthContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createRequest } from "../services/requestService";
+import {
+  getRequests,
+  type FinancialRequest,
+  type RequestStatus,
+} from "../services/requestService";
 
 function Requests() {
-  const [requests, setRequests] = useState<FinancialRequest[]>(initialRequests);
+  const { accessToken } = useAuth();
 
+  const {
+    data: requests = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["requests"],
+    queryFn: () => getRequests(accessToken!),
+    enabled: !!accessToken,
+  });
+  const queryClient = useQueryClient();
   const [applicantName, setApplicantName] = useState("");
   const [requestType, setRequestType] = useState("");
   const [amount, setAmount] = useState("");
@@ -50,26 +32,35 @@ function Requests() {
     "All",
   );
 
-  const handleAddRequest = (e: React.SyntheticEvent<HTMLFormElement>) => {
+  const createRequestMutation = useMutation({
+    mutationFn: (data: {
+      applicantName: string;
+      type: string;
+      amount: number;
+    }) => createRequest(accessToken!, data),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["requests"],
+      });
+    },
+  });
+
+  const handleAddRequest = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const newRequest: FinancialRequest = {
-      id: requests.length + 1,
+    await createRequestMutation.mutateAsync({
       applicantName,
       type: requestType,
       amount: Number(amount),
-      status: "Pending",
-      date: new Date().toISOString().split("T")[0],
-    };
-
-    setRequests([...requests, newRequest]);
+    });
 
     setApplicantName("");
     setRequestType("");
     setAmount("");
   };
 
-  const filteredRequests = requests.filter((request) => {
+  const filteredRequests = requests.filter((request: FinancialRequest) => {
     const matchesSearch = request.applicantName
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
@@ -79,6 +70,14 @@ function Requests() {
 
     return matchesSearch && matchesStatus;
   });
+
+  if (isLoading) {
+    return <p>Loading requests...</p>;
+  }
+
+  if (error) {
+    return <p>Something went wrong while loading requests.</p>;
+  }
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gray-100">

@@ -1,37 +1,39 @@
-export type LoginResponse = {
-  accessToken: string;
-  user: {
-    id: number;
-    email: string;
-  };
+import api from "./api";
+
+export type User = {
+  id: number;
+  email: string;
 };
 
-export async function login(email: string, password: string): Promise<LoginResponse> {
-  const response = await fetch("http://localhost:5000/api/auth/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({ email, password }),
+export type LoginResponse = {
+  accessToken: string;
+  user: User;
+};
+
+export type RefreshResponse = {
+  accessToken: string;
+};
+
+export async function login(
+  email: string,
+  password: string,
+): Promise<LoginResponse> {
+  const response = await api.post<LoginResponse>("/api/auth/login", {
+    email,
+    password,
   });
 
-  if (!response.ok) {
-    throw new Error("Invalid email or password");
-  }
-
-  return response.json();
+  return response.data;
 }
 
-export async function refreshAccessToken() {
-  const response = await fetch("http://localhost:5000/api/auth/refresh", {
-    method: "POST",
-    credentials: "include",
-  });
+export async function refreshAccessToken(): Promise<RefreshResponse> {
+  const response = await api.post<RefreshResponse>("/api/auth/refresh");
 
-  if (!response.ok) {
-    throw new Error("Unable to refresh token");
-  }
+  return response.data;
+}
 
-  return response.json();
+export async function logout(): Promise<{ message: string }> {
+  const response = await api.post<{ message: string }>("/api/auth/logout");
+
+  return response.data;
 }
