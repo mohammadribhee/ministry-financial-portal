@@ -10,9 +10,13 @@ export type LoginResponse = {
   user: User;
 };
 
-export type RefreshResponse = {
+export interface RefreshResponse {
   accessToken: string;
-};
+  user: {
+    id: number;
+    email: string;
+  };
+}
 
 export async function login(
   email: string,
