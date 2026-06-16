@@ -22,3 +22,16 @@ export async function login(email: string, password: string): Promise<LoginRespo
 
   return response.json();
 }
+
+export async function refreshAccessToken() {
+  const response = await fetch("http://localhost:5000/api/auth/refresh", {
+    method: "POST",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to refresh token");
+  }
+
+  return response.json();
+}

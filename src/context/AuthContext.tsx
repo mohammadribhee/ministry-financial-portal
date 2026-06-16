@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from "react";
-
+import { createContext, useContext, useEffect, useState } from "react";
+import { refreshAccessToken } from "../services/authService";
 type User = {
   id: number;
   email: string;
@@ -18,6 +18,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const loginUser = (token: string, userData: User) => {
     setAccessToken(token);
@@ -29,8 +30,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
   };
 
+  useEffect(() => {
+    const restoreSession = async () => {
+      try {
+        const data = await refreshAccessToken();
+
+        setAccessToken(data.accessToken);
+      } catch {
+        setAccessToken(null);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    restoreSession();
+  }, []);
+
   const isAuthenticated = !!accessToken;
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
   return (
     <AuthContext.Provider
       value={{

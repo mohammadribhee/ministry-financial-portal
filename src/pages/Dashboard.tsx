@@ -1,10 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import { useAuth } from "../context/AuthContext";
+
 function Dashboard() {
   const navigate = useNavigate();
+  const { logoutUser } = useAuth();
 
-  const handleLogout = () => {
-    localStorage.removeItem("isAuthenticated");
+  const handleLogout = async () => {
+    await fetch("http://localhost:5000/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    logoutUser();
     navigate("/");
   };
 
